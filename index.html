@@ -1,7 +1,127 @@
 <!DOCTYPE html>
-<html>
-  <body>
-    <h1>Hello from Lewis's platform lab</h1>
-    <p>This app is deployed via a CI/CD pipeline to Azure Kubernetes Service. Testing.</p>
-  </body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lewis's Platform Lab</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #0f1117;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      text-align: center;
+      padding: 40px;
+    }
+    h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, #0078d4, #00b4d8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 16px;
+    }
+    p {
+      color: #888;
+      font-size: 1.1rem;
+      margin-bottom: 40px;
+    }
+    .pipeline {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+    .step {
+      background: #1e2130;
+      border: 1px solid #2a2d3e;
+      border-radius: 10px;
+      padding: 16px 24px;
+      min-width: 130px;
+      transition: transform 0.2s;
+    }
+    .step:hover { transform: translateY(-4px); }
+    .step .icon { font-size: 1.8rem; margin-bottom: 8px; }
+    .step .label { font-size: 0.85rem; color: #aaa; }
+    .step .name { font-size: 0.95rem; font-weight: 600; color: #fff; }
+    .arrow {
+      color: #0078d4;
+      font-size: 1.5rem;
+      padding: 0 8px;
+    }
+    .badge {
+      display: inline-block;
+      background: #0078d415;
+      border: 1px solid #0078d4;
+      color: #0078d4;
+      border-radius: 20px;
+      padding: 6px 18px;
+      font-size: 0.85rem;
+      margin: 6px;
+    }
+    .footer {
+      margin-top: 40px;
+      color: #555;
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Lewis's Platform Lab</h1>
+    <p>A real CI/CD pipeline deployed to Azure Kubernetes Service</p>
+
+    <div class="pipeline">
+      <div class="step">
+        <div class="icon">📝</div>
+        <div class="label">Source</div>
+        <div class="name">GitHub</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step">
+        <div class="icon">🐳</div>
+        <div class="label">Build</div>
+        <div class="name">Docker</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step">
+        <div class="icon">📦</div>
+        <div class="label">Store</div>
+        <div class="name">ACR</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step">
+        <div class="icon">☸️</div>
+        <div class="label">Deploy</div>
+        <div class="name">AKS</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step">
+        <div class="icon">🌍</div>
+        <div class="label">Live</div>
+        <div class="name">Internet</div>
+      </div>
+    </div>
+
+    <div>
+      <span class="badge">GitHub Actions</span>
+      <span class="badge">Docker</span>
+      <span class="badge">Azure Container Registry</span>
+      <span class="badge">Kubernetes</span>
+      <span class="badge">AKS</span>
+    </div>
+
+    <div class="footer">
+      Automatically deployed on every commit to main
+    </div>
+  </div>
+</body>
 </html>
