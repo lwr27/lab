@@ -8,120 +8,145 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #0f1117;
+      background: #1a472a;
       color: #fff;
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: hidden;
     }
-    .container {
-      text-align: center;
+    .table {
+      width: 700px;
+      background: #2d6a4f;
+      border: 8px solid #1b4332;
+      border-radius: 12px;
       padding: 40px;
+      position: relative;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+    .net {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: repeating-linear-gradient(
+        to bottom,
+        #fff 0px,
+        #fff 8px,
+        transparent 8px,
+        transparent 16px
+      );
+      transform: translateX(-50%);
+      opacity: 0.4;
+    }
+    .centre-line {
+      position: absolute;
+      left: 0; right: 0;
+      top: 50%;
+      height: 2px;
+      background: rgba(255,255,255,0.15);
+    }
+    .ball {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      width: 32px;
+      height: 32px;
+      background: radial-gradient(circle at 35% 35%, #fff 0%, #f0f0f0 50%, #ddd 100%);
+      border-radius: 50%;
+      box-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+      animation: bounce 2s ease-in-out infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-12px) rotate(180deg); }
+    }
+    .paddle {
+      position: absolute;
+      bottom: 24px;
+      left: 24px;
+      font-size: 2rem;
+      animation: wiggle 3s ease-in-out infinite;
+    }
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(-10deg); }
+      50% { transform: rotate(10deg); }
+    }
+    .content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
     }
     h1 {
-      font-size: 3rem;
-      font-weight: 700;
-      background: linear-gradient(90deg, #0078d4, #00b4d8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 16px;
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     }
-    p {
-      color: #888;
-      font-size: 1.1rem;
-      margin-bottom: 40px;
+    .subtitle {
+      color: rgba(255,255,255,0.7);
+      font-size: 0.95rem;
+      margin-bottom: 36px;
     }
     .pipeline {
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 0;
+      margin-bottom: 32px;
       flex-wrap: wrap;
-      margin-bottom: 40px;
     }
     .step {
-      background: #1e2130;
-      border: 1px solid #2a2d3e;
+      background: rgba(0,0,0,0.25);
+      border: 1px solid rgba(255,255,255,0.2);
       border-radius: 10px;
-      padding: 16px 24px;
-      min-width: 130px;
+      padding: 12px 18px;
+      min-width: 100px;
       transition: transform 0.2s;
     }
     .step:hover { transform: translateY(-4px); }
-    .step .icon { font-size: 1.8rem; margin-bottom: 8px; }
-    .step .label { font-size: 0.85rem; color: #aaa; }
-    .step .name { font-size: 0.95rem; font-weight: 600; color: #fff; }
-    .arrow {
-      color: #0078d4;
-      font-size: 1.5rem;
-      padding: 0 8px;
+    .step .icon { font-size: 1.6rem; margin-bottom: 6px; }
+    .step .label { font-size: 0.7rem; color: rgba(255,255,255,0.6); }
+    .step .name { font-size: 0.85rem; font-weight: 600; }
+    .arrow { color: rgba(255,255,255,0.5); font-size: 1.2rem; padding: 0 6px; }
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 20px;
     }
     .badge {
-      display: inline-block;
-      background: #0078d415;
-      border: 1px solid #0078d4;
-      color: #0078d4;
+      background: rgba(0,0,0,0.2);
+      border: 1px solid rgba(255,255,255,0.25);
       border-radius: 20px;
-      padding: 6px 18px;
-      font-size: 0.85rem;
-      margin: 6px;
+      padding: 4px 14px;
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.85);
     }
     .footer {
-      margin-top: 40px;
-      color: #555;
-      font-size: 0.8rem;
+      color: rgba(255,255,255,0.4);
+      font-size: 0.75rem;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Lewis's Platform Lab</h1>
-    <p>A real CI/CD pipeline deployed to Azure Kubernetes Service</p>
+  <div class="table">
+    <div class="net"></div>
+    <div class="centre-line"></div>
+    <div class="ball"></div>
+    <div class="paddle">🏓</div>
 
-    <div class="pipeline">
-      <div class="step">
-        <div class="icon">📝</div>
-        <div class="label">Source</div>
-        <div class="name">GitHub</div>
-      </div>
-      <div class="arrow">→</div>
-      <div class="step">
-        <div class="icon">🐳</div>
-        <div class="label">Build</div>
-        <div class="name">Docker</div>
-      </div>
-      <div class="arrow">→</div>
-      <div class="step">
-        <div class="icon">📦</div>
-        <div class="label">Store</div>
-        <div class="name">ACR</div>
-      </div>
-      <div class="arrow">→</div>
-      <div class="step">
-        <div class="icon">☸️</div>
-        <div class="label">Deploy</div>
-        <div class="name">AKS</div>
-      </div>
-      <div class="arrow">→</div>
-      <div class="step">
-        <div class="icon">🌍</div>
-        <div class="label">Live</div>
-        <div class="name">Internet</div>
-      </div>
-    </div>
+    <div class="content">
+      <h1>Lewis's Platform Lab</h1>
+      <p class="subtitle">A real CI/CD pipeline deployed to Azure Kubernetes Service</p>
 
-    <div>
-      <span class="badge">GitHub Actions</span>
-      <span class="badge">Docker</span>
-      <span class="badge">Azure Container Registry</span>
-      <span class="badge">Kubernetes</span>
-      <span class="badge">AKS</span>
-    </div>
-
-    <div class="footer">
-      Automatically deployed on every commit to main!!!!!!
-    </div>
-  </div>
-</body>
-</html>
+      <div class="pipeline">
+        <div class="step">
+          <div class="icon">📝</div>
+          <div class="label">Source</div>
+          <div class="name">GitHub</div>
+        </div>
+        <div class="a
