@@ -8,6 +8,7 @@ on:
       - 'terraform/**'
       - 'README.md'
       - '.github/workflows/**'
+      - 'scripts/**'
 
 jobs:
   build-and-push:
