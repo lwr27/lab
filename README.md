@@ -1,12 +1,12 @@
 # Lab
 
-A home lab I built to get hands on with platform engineering concepts while preparing for a role in the field.
+A home lab for getting hands on with platform engineering tools and concepts.
 
 ## What it does
 
-Deploys a simple web app to Azure Kubernetes Service using a fully automated CI/CD pipeline. Every time I push a change to main, GitHub Actions builds a Docker image, pushes it to Azure Container Registry, and deploys it to AKS automatically.
+Deploys a simple web app to Azure Kubernetes Service. Every time I push a change to main, GitHub Actions builds a Docker image, pushes it to Azure Container Registry, and deploys it to AKS automatically.
 
-## How it's structured
+## Structure
 
 | File | What it does |
 |------|-------------|
@@ -18,14 +18,14 @@ Deploys a simple web app to Azure Kubernetes Service using a fully automated CI/
 
 ## Infrastructure
 
-Everything in Azure is provisioned with Terraform so I can spin it up and tear it down quickly without clicking around the portal:
+Provisioned with Terraform so I can spin up and tear down quickly:
 
 - Resource Group
 - Azure Container Registry
 - AKS cluster
-- AcrPull role assignment so AKS can pull images from ACR
+- AcrPull role assignment
 
-## Spinning it up
+## Spin up
 
 ```bash
 cd ~/lab/terraform
@@ -35,19 +35,14 @@ terraform output acr_username
 terraform output acr_password
 ```
 
-Update the ACR secrets in GitHub then push a change to trigger the pipeline.
+Update ACR secrets in GitHub then push a change to trigger the pipeline.
 
-## Tearing it down
+## Tear down
 
 ```bash
 terraform destroy
 ```
 
-## Things I learned building this
+## Tools
 
-- How CI/CD pipelines actually work end to end
-- How Docker images get built and stored in a registry
-- How Kubernetes deploys and manages containers
-- How to provision Azure infrastructure with Terraform
-- How to debug real errors — ImagePullBackOff, credential issues, missing manifests
-- How to manage secrets securely
+GitHub Actions · Docker · Azure Container Registry · AKS · Terraform · kubectl
