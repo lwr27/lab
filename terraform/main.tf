@@ -41,7 +41,7 @@ resource "azurerm_container_registry" "main" {
   resource_group_name = azurerm_resource_group.main.name
   location            = azurerm_resource_group.main.location
   sku                 = "Basic"
-  admin_enabled       = true
+  admin_enabled       = false
 }
 
 # AKS Cluster
@@ -78,13 +78,3 @@ output "acr_login_server" {
 output "aks_name" {
   value = azurerm_kubernetes_cluster.main.name
 }
-
-output "acr_username" {
-  value = azurerm_container_registry.main.admin_username
-}
-
-output "acr_password" {
-  value     = azurerm_container_registry.main.admin_password
-  sensitive = true
-}
-
