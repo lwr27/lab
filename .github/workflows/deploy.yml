@@ -42,7 +42,7 @@ jobs:
       - name: Get AKS credentials
         uses: azure/aks-set-context@v3
         with:
-          resource-group: RG1
+          resource-group: platform-lab-rg
           cluster-name: platform-lab-aks
 
       - name: Deploy to AKS
