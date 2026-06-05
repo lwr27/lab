@@ -1,152 +1,678 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lewis's Platform Lab</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #1a472a;
-      color: #fff;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-    .table {
-      width: 700px;
-      background: #2d6a4f;
-      border: 8px solid #1b4332;
-      border-radius: 12px;
-      padding: 40px;
-      position: relative;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-    }
-    .net {
-      position: absolute;
-      left: 50%;
-      top: 0;
-      bottom: 0;
-      width: 4px;
-      background: repeating-linear-gradient(
-        to bottom,
-        #fff 0px,
-        #fff 8px,
-        transparent 8px,
-        transparent 16px
-      );
-      transform: translateX(-50%);
-      opacity: 0.4;
-    }
-    .centre-line {
-      position: absolute;
-      left: 0; right: 0;
-      top: 50%;
-      height: 2px;
-      background: rgba(255,255,255,0.15);
-    }
-    .ball {
-      position: absolute;
-      top: 20px;
-      right: 30px;
-      width: 32px;
-      height: 32px;
-      background: radial-gradient(circle at 35% 35%, #fff 0%, #f0f0f0 50%, #ddd 100%);
-      border-radius: 50%;
-      box-shadow: 2px 2px 6px rgba(0,0,0,0.3);
-      animation: bounce 2s ease-in-out infinite;
-    }
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-12px) rotate(180deg); }
-    }
-    .paddle {
-      position: absolute;
-      bottom: 24px;
-      left: 24px;
-      font-size: 2rem;
-      animation: wiggle 3s ease-in-out infinite;
-    }
-    @keyframes wiggle {
-      0%, 100% { transform: rotate(-10deg); }
-      50% { transform: rotate(10deg); }
-    }
-    .content {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-    }
-    h1 {
-      font-size: 2.2rem;
-      font-weight: 800;
-      margin-bottom: 8px;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-    }
-    .subtitle {
-      color: rgba(255,255,255,0.7);
-      font-size: 0.95rem;
-      margin-bottom: 36px;
-    }
-    .pipeline {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0;
-      margin-bottom: 32px;
-      flex-wrap: wrap;
-    }
-    .step {
-      background: rgba(0,0,0,0.25);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 10px;
-      padding: 12px 18px;
-      min-width: 100px;
-      transition: transform 0.2s;
-    }
-    .step:hover { transform: translateY(-4px); }
-    .step .icon { font-size: 1.6rem; margin-bottom: 6px; }
-    .step .label { font-size: 0.7rem; color: rgba(255,255,255,0.6); }
-    .step .name { font-size: 0.85rem; font-weight: 600; }
-    .arrow { color: rgba(255,255,255,0.5); font-size: 1.2rem; padding: 0 6px; }
-    .badges {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 8px;
-      margin-bottom: 20px;
-    }
-    .badge {
-      background: rgba(0,0,0,0.2);
-      border: 1px solid rgba(255,255,255,0.25);
-      border-radius: 20px;
-      padding: 4px 14px;
-      font-size: 0.75rem;
-      color: rgba(255,255,255,0.85);
-    }
-    .footer {
-      color: rgba(255,255,255,0.4);
-      font-size: 0.75rem;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mark Tanner TT | Table Tennis Bath, Bristol & Keynsham</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0a0a0a;
+    --paper: #f5f0e8;
+    --accent: #e8380d;
+    --accent2: #f5a623;
+    --muted: #6b6560;
+    --line: rgba(10,10,10,0.12);
+    --green: #1a4a2e;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 3rem;
+    background: var(--paper);
+    border-bottom: 1.5px solid var(--ink);
+    mix-blend-mode: normal;
+  }
+  .nav-logo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.3rem; font-weight: 900; letter-spacing: 0.04em;
+    text-transform: uppercase; text-decoration: none; color: var(--ink);
+  }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.8rem; font-weight: 500; letter-spacing: 0.1em;
+    text-transform: uppercase; text-decoration: none; color: var(--ink);
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-cta {
+    background: var(--ink); color: var(--paper) !important;
+    padding: 0.5rem 1.2rem;
+    border: 1.5px solid var(--ink);
+  }
+  .nav-cta:hover { background: var(--accent) !important; border-color: var(--accent) !important; color: var(--paper) !important; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1.5px solid var(--ink);
+    margin-top: 65px;
+  }
+  .hero-left {
+    padding: 5rem 3rem 5rem 3rem;
+    display: flex; flex-direction: column; justify-content: center;
+    border-right: 1.5px solid var(--ink);
+  }
+  .hero-tag {
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .hero-tag::before { content: ''; width: 2rem; height: 1.5px; background: var(--accent); display: block; }
+  .hero-headline {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(4.5rem, 9vw, 8rem);
+    font-weight: 900;
+    line-height: 0.92;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    margin-bottom: 2rem;
+  }
+  .hero-headline span { color: var(--accent); }
+  .hero-sub {
+    font-size: 1.05rem; font-weight: 300; line-height: 1.7;
+    color: var(--muted); max-width: 440px; margin-bottom: 3rem;
+  }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--ink); color: var(--paper);
+    padding: 1rem 2rem; border: 1.5px solid var(--ink);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.85rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+  }
+  .btn-primary:hover { background: var(--accent); border-color: var(--accent); }
+  .btn-outline {
+    background: transparent; color: var(--ink);
+    padding: 1rem 2rem; border: 1.5px solid var(--ink);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.85rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+  }
+  .btn-outline:hover { background: var(--ink); color: var(--paper); }
+
+  .hero-right {
+    position: relative; overflow: hidden;
+    background: var(--green);
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 3rem;
+  }
+  .hero-ping {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 340px; height: 340px;
+    border: 1.5px solid rgba(255,255,255,0.08);
+    border-radius: 50%;
+    animation: pulse 3s ease-in-out infinite;
+  }
+  .hero-ping::before {
+    content: ''; position: absolute; top: 20px; left: 20px; right: 20px; bottom: 20px;
+    border: 1.5px solid rgba(255,255,255,0.06); border-radius: 50%;
+    animation: pulse 3s ease-in-out infinite 0.5s;
+  }
+  .hero-ping::after {
+    content: ''; position: absolute; top: 60px; left: 60px; right: 60px; bottom: 60px;
+    border: 1.5px solid rgba(255,255,255,0.1); border-radius: 50%;
+    animation: pulse 3s ease-in-out infinite 1s;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.04); opacity: 1; }
+  }
+  .hero-ball {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 80px; height: 80px; border-radius: 50%;
+    background: var(--paper);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.5rem;
+    animation: bounce 2.5s ease-in-out infinite;
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+    50% { transform: translate(-50%, -50%) translateY(-20px); }
+  }
+  .hero-stats {
+    position: relative; z-index: 2;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+    border: 1.5px solid rgba(255,255,255,0.15);
+  }
+  .hero-stat {
+    padding: 1.5rem; background: rgba(0,0,0,0.3);
+    border: 0.5px solid rgba(255,255,255,0.08);
+  }
+  .hero-stat-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 2.5rem; font-weight: 900; color: var(--paper);
+    line-height: 1;
+  }
+  .hero-stat-num span { color: var(--accent2); }
+  .hero-stat-label {
+    font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em;
+    text-transform: uppercase; color: rgba(245,240,232,0.5); margin-top: 0.3rem;
+  }
+
+  /* TICKER */
+  .ticker {
+    background: var(--accent); overflow: hidden;
+    border-bottom: 1.5px solid var(--ink);
+    padding: 0.6rem 0;
+  }
+  .ticker-inner {
+    display: flex; gap: 4rem;
+    animation: ticker 20s linear infinite;
+    white-space: nowrap;
+  }
+  .ticker-item {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.85rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--paper);
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .ticker-item::after { content: '●'; font-size: 0.5rem; }
+  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* SECTION SHARED */
+  section { border-bottom: 1.5px solid var(--ink); }
+  .section-inner { max-width: 1200px; margin: 0 auto; padding: 5rem 3rem; }
+  .section-label {
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--accent);
+    display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1.5rem;
+  }
+  .section-label::before { content: ''; width: 2rem; height: 1.5px; background: var(--accent); display: block; }
+  .section-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 900; text-transform: uppercase; line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  /* KEYNSHAM SECTION */
+  .keynsham { background: var(--ink); color: var(--paper); }
+  .keynsham .section-label { color: var(--accent2); }
+  .keynsham .section-label::before { background: var(--accent2); }
+  .keynsham-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+    border: 1.5px solid rgba(255,255,255,0.1); margin-top: 3rem;
+  }
+  .keynsham-feature {
+    padding: 2rem; border-right: 1.5px solid rgba(255,255,255,0.1);
+    border-bottom: 1.5px solid rgba(255,255,255,0.1);
+  }
+  .keynsham-feature:nth-child(2n) { border-right: none; }
+  .keynsham-feature:nth-last-child(-n+2) { border-bottom: none; }
+  .kf-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 3.5rem; font-weight: 900;
+    color: rgba(255,255,255,0.07); line-height: 1; margin-bottom: 0.5rem;
+  }
+  .kf-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.3rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.03em; color: var(--paper); margin-bottom: 0.5rem;
+  }
+  .kf-desc { font-size: 0.88rem; color: rgba(245,240,232,0.55); line-height: 1.6; }
+
+  /* LOCATIONS */
+  .locations-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    border: 1.5px solid var(--ink); margin-top: 3rem;
+  }
+  .location-card {
+    padding: 2.5rem 2rem; border-right: 1.5px solid var(--ink);
+    transition: background 0.2s;
+  }
+  .location-card:last-child { border-right: none; }
+  .location-card:hover { background: var(--ink); color: var(--paper); }
+  .location-card:hover .location-icon { background: var(--accent); color: var(--paper); }
+  .location-card:hover .location-link { color: var(--accent2); }
+  .location-icon {
+    width: 48px; height: 48px; border: 1.5px solid var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; margin-bottom: 1.5rem;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+  }
+  .location-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 2rem; font-weight: 900; text-transform: uppercase; margin-bottom: 1rem;
+  }
+  .location-desc { font-size: 0.88rem; line-height: 1.7; color: var(--muted); margin-bottom: 1.5rem; }
+  .location-card:hover .location-desc { color: rgba(245,240,232,0.6); }
+  .location-link {
+    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--accent); text-decoration: none;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .location-link::after { content: '→'; }
+
+  /* COACHING */
+  .coaching-layout {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; margin-top: 3rem;
+  }
+  .coaching-body { font-size: 1rem; line-height: 1.8; color: var(--muted); margin-bottom: 2rem; }
+  .coaching-list { list-style: none; display: flex; flex-direction: column; gap: 0; }
+  .coaching-list li {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 1rem 0; border-bottom: 1px solid var(--line);
+    font-size: 0.95rem; font-weight: 500;
+  }
+  .coaching-list li::before {
+    content: ''; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent); flex-shrink: 0;
+  }
+  .coaching-aside {
+    background: var(--green); color: var(--paper);
+    padding: 2.5rem; border: 1.5px solid var(--ink);
+  }
+  .coaching-aside-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 2rem; font-weight: 900; text-transform: uppercase;
+    margin-bottom: 1rem; line-height: 1;
+  }
+  .coaching-aside-title span { color: var(--accent2); }
+  .coaching-aside p { font-size: 0.9rem; line-height: 1.7; color: rgba(245,240,232,0.65); margin-bottom: 1.5rem; }
+  .coaching-aside .btn-primary { display: inline-block; }
+
+  /* MARQUEE STRIP */
+  .marquee-strip {
+    background: var(--green); overflow: hidden;
+    border-top: 1.5px solid var(--ink); border-bottom: 1.5px solid var(--ink);
+    padding: 1.2rem 0;
+  }
+  .marquee-inner {
+    display: flex; gap: 3rem;
+    animation: ticker 30s linear infinite;
+    white-space: nowrap;
+  }
+  .marquee-item {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.2rem; font-weight: 700; letter-spacing: 0.05em;
+    text-transform: uppercase; color: rgba(245,240,232,0.4);
+    display: flex; align-items: center; gap: 1.5rem;
+  }
+  .marquee-item strong { color: var(--paper); }
+  .marquee-item::after { content: '/'; color: var(--accent); }
+
+  /* ABOUT / MISSION */
+  .mission { background: var(--ink); color: var(--paper); }
+  .mission .section-label { color: var(--accent); }
+  .mission .section-label::before { background: var(--accent); }
+  .mission-quote {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(1.8rem, 3.5vw, 3rem); font-weight: 700;
+    line-height: 1.2; max-width: 800px; margin: 2rem 0;
+    border-left: 4px solid var(--accent); padding-left: 2rem;
+  }
+  .mission-quote span { color: var(--accent2); }
+  .mission-body { font-size: 1rem; line-height: 1.8; color: rgba(245,240,232,0.6); max-width: 640px; }
+
+  /* CTA */
+  .cta-section { background: var(--accent); border-bottom: none; }
+  .cta-inner {
+    max-width: 1200px; margin: 0 auto; padding: 6rem 3rem;
+    display: flex; align-items: center; justify-content: space-between; gap: 3rem;
+  }
+  .cta-headline {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 900;
+    text-transform: uppercase; color: var(--paper); line-height: 1;
+  }
+  .cta-headline span { color: var(--ink); }
+  .cta-actions { display: flex; flex-direction: column; gap: 1rem; flex-shrink: 0; }
+  .btn-white {
+    background: var(--paper); color: var(--ink);
+    padding: 1rem 2.5rem; border: 1.5px solid var(--paper);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.85rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; text-decoration: none;
+    display: block; text-align: center;
+    transition: background 0.2s;
+  }
+  .btn-white:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .btn-ghost {
+    background: transparent; color: var(--paper);
+    padding: 1rem 2.5rem; border: 1.5px solid var(--paper);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.85rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; text-decoration: none;
+    display: block; text-align: center;
+    transition: background 0.2s;
+  }
+  .btn-ghost:hover { background: rgba(255,255,255,0.15); }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink); color: var(--paper);
+    border-top: 1.5px solid rgba(255,255,255,0.1);
+  }
+  .footer-inner {
+    max-width: 1200px; margin: 0 auto; padding: 3rem 3rem 2rem;
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3rem;
+  }
+  .footer-brand-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.5rem; font-weight: 900; text-transform: uppercase; margin-bottom: 0.5rem;
+  }
+  .footer-brand-sub { font-size: 0.8rem; color: rgba(245,240,232,0.4); line-height: 1.6; }
+  .footer-heading {
+    font-size: 0.7rem; font-weight: 600; letter-spacing: 0.15em;
+    text-transform: uppercase; color: rgba(245,240,232,0.4); margin-bottom: 1rem;
+  }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+  .footer-links a {
+    font-size: 0.88rem; color: rgba(245,240,232,0.7); text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--accent); }
+  .footer-bottom {
+    max-width: 1200px; margin: 0 auto; padding: 1.5rem 3rem;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-copy { font-size: 0.78rem; color: rgba(245,240,232,0.3); }
+  .footer-social { display: flex; gap: 1rem; }
+  .footer-social a {
+    width: 32px; height: 32px; border: 1px solid rgba(255,255,255,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem; color: rgba(245,240,232,0.5); text-decoration: none;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .footer-social a:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ANIMATIONS */
+  .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { min-height: 300px; }
+    .hero-left { padding: 3rem 1.5rem; }
+    .section-inner { padding: 3rem 1.5rem; }
+    .locations-grid { grid-template-columns: 1fr; }
+    .location-card { border-right: none; border-bottom: 1.5px solid var(--ink); }
+    .coaching-layout { grid-template-columns: 1fr; }
+    .keynsham-grid { grid-template-columns: 1fr; }
+    .keynsham-feature { border-right: none; }
+    .cta-inner { flex-direction: column; }
+    .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+    .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+</style>
 </head>
 <body>
-  <div class="table">
-    <div class="net"></div>
-    <div class="centre-line"></div>
-    <div class="ball"></div>
-    <div class="paddle">🏓</div>
 
-    <div class="content">
-      <h1>Lewis's Platform Lab</h1>
-      <p class="subtitle">A real CI/CD pipeline deployed to Azure Kubernetes Service</p>
+<nav>
+  <a href="#" class="nav-logo">Mark Tanner TT</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#clubs">Clubs</a></li>
+    <li><a href="#coaching">Coaching</a></li>
+    <li><a href="#contact" class="nav-cta">Get Involved</a></li>
+  </ul>
+</nav>
 
-      <div class="pipeline">
-        <div class="step">
-          <div class="icon">📝</div>
-          <div class="label">Source</div>
-          <div class="name">GitHub</div>
+<!-- TICKER -->
+<div class="ticker" style="margin-top: 65px;">
+  <div class="ticker-inner">
+    <span class="ticker-item">Keynsham Table Tennis Club</span>
+    <span class="ticker-item">Coaching & Development</span>
+    <span class="ticker-item">Bath · Bristol · Keynsham</span>
+    <span class="ticker-item">All Ages Welcome</span>
+    <span class="ticker-item">Junior Programmes</span>
+    <span class="ticker-item">League Competition</span>
+    <span class="ticker-item">Keynsham Table Tennis Club</span>
+    <span class="ticker-item">Coaching & Development</span>
+    <span class="ticker-item">Bath · Bristol · Keynsham</span>
+    <span class="ticker-item">All Ages Welcome</span>
+    <span class="ticker-item">Junior Programmes</span>
+    <span class="ticker-item">League Competition</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero" style="border-bottom:1.5px solid var(--ink);">
+  <div class="hero-left">
+    <div class="hero-tag">Table Tennis South West</div>
+    <h1 class="hero-headline">
+      Serve.<br>Spin.<br><span>Smash.</span>
+    </h1>
+    <p class="hero-sub">
+      Promoting and developing table tennis across Bath, Bristol and Keynsham. Whether you're picking up a bat for the first time or competing in leagues — there's a place for you here.
+    </p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Get Involved</a>
+      <a href="#clubs" class="btn-outline">Find a Club</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-ping"></div>
+    <div class="hero-ball">🏓</div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num">2017<span>+</span></div>
+        <div class="hero-stat-label">Est. Keynsham TTC</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num"><span>3</span></div>
+        <div class="hero-stat-label">Cities &amp; Towns</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">All<span>★</span></div>
+        <div class="hero-stat-label">Skill Levels</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">SW<span>↗</span></div>
+        <div class="hero-stat-label">South West Region</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KEYNSHAM CLUB -->
+<section id="clubs">
+  <div class="section-inner keynsham" style="background:var(--ink); color:var(--paper); max-width:100%; padding: 5rem 3rem;">
+    <div style="max-width:1200px; margin:0 auto;">
+      <div class="section-label" style="color:var(--accent2);">
+        <span style="width:2rem;height:1.5px;background:var(--accent2);display:block;"></span>
+        Since 2017
+      </div>
+      <h2 class="section-title fade-up" style="color:var(--paper); font-size: clamp(2.5rem, 5vw, 4rem);">
+        Keynsham<br>Table Tennis Club
+      </h2>
+      <p style="font-size:1rem; color:rgba(245,240,232,0.55); max-width:560px; line-height:1.8; margin-top:1rem;" class="fade-up">
+        A friendly, competitive and welcoming environment built from the ground up since 2017. Beginners and experienced league players both thrive here.
+      </p>
+      <div class="keynsham-grid fade-up">
+        <div class="keynsham-feature">
+          <div class="kf-num">01</div>
+          <div class="kf-title">Club Sessions</div>
+          <div class="kf-desc">Regular sessions for adults and juniors, welcoming players of all abilities.</div>
         </div>
-        <div class="a
+        <div class="keynsham-feature">
+          <div class="kf-num">02</div>
+          <div class="kf-title">League Competition</div>
+          <div class="kf-desc">Competitive league play for those ready to test their skills against local opposition.</div>
+        </div>
+        <div class="keynsham-feature">
+          <div class="kf-num">03</div>
+          <div class="kf-title">Player Development</div>
+          <div class="kf-desc">Structured coaching and development pathways for players who want to improve.</div>
+        </div>
+        <div class="keynsham-feature">
+          <div class="kf-num">04</div>
+          <div class="kf-title">Community</div>
+          <div class="kf-desc">A supportive atmosphere where the sport and the people around it both matter.</div>
+        </div>
+      </div>
+      <div style="margin-top:2.5rem;" class="fade-up">
+        <a href="#contact" class="btn-primary">Interested in Keynsham? Get in touch →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOCATIONS -->
+<section>
+  <div class="section-inner">
+    <div class="section-label">Where We Are</div>
+    <h2 class="section-title fade-up">Bath · Bristol<br>& Beyond</h2>
+    <div class="locations-grid fade-up">
+      <div class="location-card">
+        <div class="location-icon">⚡</div>
+        <div class="location-name">Bath</div>
+        <p class="location-desc">Join local clubs, enter competitive leagues, and access coaching and development sessions across Bath.</p>
+        <a href="#contact" class="location-link">Find out more</a>
+      </div>
+      <div class="location-card">
+        <div class="location-icon">🏙</div>
+        <div class="location-name">Bristol</div>
+        <p class="location-desc">Bristol has a strong and growing table tennis scene. Find clubs, leagues and grassroots development.</p>
+        <a href="#contact" class="location-link">Find out more</a>
+      </div>
+      <div class="location-card">
+        <div class="location-icon">🏓</div>
+        <div class="location-name">Keynsham</div>
+        <p class="location-desc">Home of Keynsham TTC — built in 2017 and still going strong. Our flagship club for all levels.</p>
+        <a href="#contact" class="location-link">Find out more</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-inner">
+    <span class="marquee-item"><strong>Technical Coaching</strong> for all levels</span>
+    <span class="marquee-item"><strong>Junior Pathways</strong> to competition</span>
+    <span class="marquee-item"><strong>League Play</strong> across the South West</span>
+    <span class="marquee-item"><strong>Community</strong> at the heart</span>
+    <span class="marquee-item"><strong>Consistency</strong> focus smart practice</span>
+    <span class="marquee-item"><strong>Technical Coaching</strong> for all levels</span>
+    <span class="marquee-item"><strong>Junior Pathways</strong> to competition</span>
+    <span class="marquee-item"><strong>League Play</strong> across the South West</span>
+    <span class="marquee-item"><strong>Community</strong> at the heart</span>
+    <span class="marquee-item"><strong>Consistency</strong> focus smart practice</span>
+  </div>
+</div>
+
+<!-- COACHING -->
+<section id="coaching">
+  <div class="section-inner">
+    <div class="section-label">Player Development</div>
+    <h2 class="section-title fade-up">Coaching &<br>Improvement</h2>
+    <div class="coaching-layout">
+      <div class="fade-up">
+        <p class="coaching-body">
+          Improvement is at the heart of everything here. Table tennis rewards consistency, focus and smart practice — and with the right support, players of all ages develop quickly and confidently.
+        </p>
+        <ul class="coaching-list">
+          <li>Technical coaching for stroke play and tactics</li>
+          <li>Match-play development and game understanding</li>
+          <li>Junior progression pathways into competition</li>
+          <li>Support for established league and competitive players</li>
+        </ul>
+      </div>
+      <div class="coaching-aside fade-up">
+        <div class="coaching-aside-title">Ready to<br><span>Level Up?</span></div>
+        <p>Whether you're brand new or already competing, structured coaching makes a real difference. Get in touch to find out what's right for you.</p>
+        <a href="#contact" class="btn-primary" style="background:var(--accent2); border-color:var(--accent2); color:var(--ink);">Talk to Mark →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MISSION -->
+<section class="mission" id="about">
+  <div class="section-inner">
+    <div class="section-label">The Mission</div>
+    <blockquote class="mission-quote fade-up">
+      "Growing table tennis across the South West — <span>one player,<br>one club,</span> one community at a time."
+    </blockquote>
+    <p class="mission-body fade-up">
+      Table tennis builds confidence, sharpens concentration, and creates community. Through clubs, coaching and competition, the aim is to make the sport accessible to everyone across Bath, Bristol, Keynsham and the wider South West.
+    </p>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <div class="cta-inner">
+    <div>
+      <h2 class="cta-headline">Ready<br>to <span>Play?</span></h2>
+      <p style="color:rgba(245,240,232,0.7); margin-top:1rem; font-size:0.95rem; max-width:420px; line-height:1.7;">
+        Whether you want to join a club, start coaching, or just find out what's going on in your area — reach out today.
+      </p>
+    </div>
+    <div class="cta-actions">
+      <a href="https://www.marktannertt.com/contact" class="btn-white">Contact Mark</a>
+      <a href="https://www.marktannertt.com" class="btn-ghost">Visit Full Site ↗</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand-name">Mark Tanner TT</div>
+      <p class="footer-brand-sub">Table tennis coaching, clubs and leagues across Bath, Bristol and Keynsham.<br>South West England.</p>
+    </div>
+    <div>
+      <div class="footer-heading">Navigation</div>
+      <ul class="footer-links">
+        <li><a href="#clubs">Clubs</a></li>
+        <li><a href="#coaching">Coaching</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="https://www.marktannertt.com/blog">Blog</a></li>
+        <li><a href="https://www.marktannertt.com/videos">Videos</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">Locations</div>
+      <ul class="footer-links">
+        <li><a href="#clubs">Keynsham TTC</a></li>
+        <li><a href="#clubs">Table Tennis Bath</a></li>
+        <li><a href="#clubs">Table Tennis Bristol</a></li>
+        <li><a href="https://www.marktannertt.com/store">Store</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2026 Mark Tanner TT · marktannertt.com</span>
+    <div class="footer-social">
+      <a href="https://www.facebook.com/marktannertt" target="_blank" aria-label="Facebook">f</a>
+      <a href="https://www.marktannertt.com" target="_blank" aria-label="Website">↗</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
