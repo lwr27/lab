@@ -21,14 +21,11 @@ Deploys a simple web app to Azure Kubernetes Service. Every time I push a change
 
 Provisioned with Terraform so I can spin up and tear down quickly:
 
-- Resource Group
 - Azure Container Registry
 - AKS cluster
 - AcrPull role assignment
 
 ## First time setup
-
-These only need doing once — they survive terraform destroy and apply cycles.
 
 **1. Create a service principal**
 ```bash
