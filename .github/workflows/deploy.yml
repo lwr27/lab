@@ -10,6 +10,10 @@ on:
       - '.github/workflows/**'
       - 'scripts/**'
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -18,8 +22,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-- name: Login to ACR
-  run: az acr login --name platformlablwr27
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Login to ACR
+        run: az acr login --name platformlablwr27
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
@@ -36,9 +47,11 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Login to Azure
-        uses: azure/login@v1
+        uses: azure/login@v2
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Get AKS credentials
         uses: azure/aks-set-context@v3
