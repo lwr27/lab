@@ -57,3 +57,8 @@ jobs:
             deployment.yaml
           images: |
             ${{ secrets.ACR_LOGIN_SERVER }}/myapp:${{ github.run_number }}
+
+      - name: Health check
+        run: |
+          chmod +x scripts/health-check.sh
+          ./scripts/health-check.sh
