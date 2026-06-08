@@ -4,7 +4,11 @@ Personal home lab I built to get hands on with platform engineering. Started fro
 
 ## What it does
 
-Deploys a web app to AKS. Push a change to main, GitHub Actions picks it up, builds a Docker image, pushes it to ACR and deploys it to Kubernetes. Health check runs after to make sure everything came up okay.
+Deploys a web app through a full staging and production pipeline. Push a change to main, GitHub Actions builds a Docker image, deploys to staging automatically, runs a health check, then waits for manual approval before deploying to production.
+
+## Pipeline flow
+
+Push to main → Build image → push to ACR → Deploy to staging → health check → Manual approval → Deploy to production → health check → Live
 
 ## Files
 
@@ -12,7 +16,8 @@ Deploys a web app to AKS. Push a change to main, GitHub Actions picks it up, bui
 |------|-------------|
 | `index.html` | The app |
 | `Dockerfile` | Builds the image |
-| `deployment.yaml` | Kubernetes config |
+| `k8s/staging.yaml` | Kubernetes config for staging |
+| `k8s/production.yaml` | Kubernetes config for production |
 | `.github/workflows/deploy.yml` | Pipeline |
 | `terraform/main.tf` | Azure infrastructure |
 | `scripts/health-check.sh` | Post-deploy health check |
@@ -28,31 +33,27 @@ All provisioned with Terraform so I can spin it up and tear it down without clic
 
 ## Auth
 
-Uses OIDC so there are no stored passwords or credentials to rotate. GitHub and Azure trust each other directly via a federated credential scoped to this repo.
+Uses OIDC so there are no stored passwords or credentials to rotate. GitHub and Azure trust each other directly via federated credentials — one scoped to the main branch, one scoped to the production environment.
 
 Secrets needed:
-- `ACR_LOGIN_SERVER`
-- `AZURE_CLIENT_ID`
-- `AZURE_TENANT_ID`
-- `AZURE_SUBSCRIPTION_ID`
+- ACR_LOGIN_SERVER
+- AZURE_CLIENT_ID
+- AZURE_TENANT_ID
+- AZURE_SUBSCRIPTION_ID
 
 ## Spin up
 
-```bash
 git clone https://github.com/lwr27/lab.git
 cd lab/terraform
 terraform init
 terraform apply
-```
 
 Push a change to index.html to trigger the pipeline.
 
 ## Tear down
 
-```bash
 terraform destroy
-```
 
 ## Stack
 
-GitHub Actions · Docker · ACR · AKS · Terraform · Bash · OIDC
+GitHub Actions · Docker · ACR · AKS · Terraform · Bash · OIDC · Kubernetes namespaces
