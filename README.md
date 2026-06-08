@@ -44,8 +44,11 @@ Secrets needed:
 ## Spin up
 
 git clone https://github.com/lwr27/lab.git
+
 cd lab/terraform
+
 terraform init
+
 terraform apply
 
 Push a change to index.html to trigger the pipeline.
