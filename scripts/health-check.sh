@@ -1,8 +1,12 @@
 #!/bin/bash
 
 echo "=== Starting health check ==="
+NAMESPACE=${1:-default}
+APP="myapp"
+EXPECTED=1
+TIMEOUT=60
+ELAPSED=0
 
-# Check 1 - Is AKS reachable?
 echo "Checking AKS connectivity..."
 if kubectl cluster-info > /dev/null 2>&1; then
   echo "AKS cluster is reachable"
@@ -11,13 +15,7 @@ else
   exit 1
 fi
 
-# Check 2 - Did pods come up successfully?
-echo "Checking pod health..."
-NAMESPACE="default"
-APP="myapp"
-EXPECTED=1
-TIMEOUT=60
-ELAPSED=0
+echo "Checking pod health in namespace: $NAMESPACE..."
 
 while [ $ELAPSED -lt $TIMEOUT ]
 do
@@ -25,7 +23,7 @@ do
   
   if [ $RUNNING -ge $EXPECTED ]
   then
-    echo "SUCCESS: $RUNNING pod(s) running for $APP"
+    echo "SUCCESS: $RUNNING pod(s) running for $APP in $NAMESPACE"
     exit 0
   fi
   
