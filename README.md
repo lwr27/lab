@@ -143,8 +143,3 @@ terraform destroy
 ![Terraform apply complete](screenshots/terraform-destroy.png)
 
 </details>
----
-
-## Stack
-
-GitHub Actions · Docker · ACR · AKS · Terraform · Bash · OIDC · Kubernetes namespaces
