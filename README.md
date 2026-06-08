@@ -1,50 +1,35 @@
 # Lab
-
 Personal home lab built to get hands on with platform engineering concepts.
-
 ## What it does
-
 Deploys a web app through a full staging and production pipeline on Azure Kubernetes Service. Infrastructure is provisioned with Terraform and authentication uses OIDC — no stored passwords anywhere.
-
 ---
-
 ## Pipeline
-
 Push a change to main and this happens automatically:
-
 1. Docker image built and pushed to Azure Container Registry
 2. Deployed to staging namespace and health checked
 3. Pipeline pauses for manual approval
 4. Deployed to production namespace and health checked
-
 <details>
 <summary>Pipeline screenshots</summary>
 
 ![Pipeline paused waiting for approval](screenshots/approval-gate.png)
-
 ![All stages green after approval](screenshots/pipeline-complete.png)
 
 </details>
 
 ---
-
 ## Infrastructure
-
 Provisioned with Terraform — spin up with one command, tear down with one command.
-
 Resources created:
 - Resource Group
 - Azure Container Registry
 - AKS cluster
 - AcrPull role assignment
-
-
+- Log Analytics Workspace
+- Azure Monitor metric alert
 ---
-
 ## Environments
-
 Staging and production run as separate Kubernetes namespaces on the same cluster with their own public IPs.
-
 | | Staging | Production |
 |--|---------|------------|
 | Replicas | 1 | 2 |
@@ -52,22 +37,28 @@ Staging and production run as separate Kubernetes namespaces on the same cluster
 | Resource limits | Yes | Yes |
 | Liveness probe | Yes | Yes |
 | Readiness probe | Yes | Yes |
-
 <details>
 <summary>Environment screenshots</summary>
 
 ![Health check staging — 1 pod](screenshots/health-check-staging.png)
-
 ![Health check production — 2 pods](screenshots/health-check-production.png)
-
 ![Staging and production services in AKS](screenshots/aks-services.png)
 
 </details>
 
 ---
+## Monitoring
+Azure Monitor and Log Analytics provisioned via Terraform. Pod status is queryable via KQL. A metric alert fires if pod count drops to zero and sends an email notification.
+<details>
+<summary>Monitoring screenshots</summary>
 
+![Alert rule — fires when no pods running](screenshots/pod-rule.png)
+![KQL query — production pod status over time](screenshots/kql-log.png)
+
+</details>
+
+---
 ## Live app
-
 <details>
 <summary>App screenshots</summary>
 
@@ -76,21 +67,16 @@ Staging and production run as separate Kubernetes namespaces on the same cluster
 </details>
 
 ---
-
 ## Auth
-
 Uses OIDC — GitHub and Azure trust each other directly via federated credentials. No passwords, nothing to rotate or expire.
-
 Two federated credentials:
 - Scoped to `refs/heads/main` for the build and staging stages
 - Scoped to `environment:production` for the production stage
-
 Secrets needed:
 - `ACR_LOGIN_SERVER`
 - `AZURE_CLIENT_ID`
 - `AZURE_TENANT_ID`
 - `AZURE_SUBSCRIPTION_ID`
-
 <details>
 <summary>Auth screenshots</summary>
 
@@ -99,9 +85,7 @@ Secrets needed:
 </details>
 
 ---
-
 ## Files
-
 | File | What it does |
 |------|-------------|
 | `index.html` | The app |
@@ -109,22 +93,17 @@ Secrets needed:
 | `k8s/staging.yaml` | Kubernetes config for staging — 1 replica, resource limits, probes |
 | `k8s/production.yaml` | Kubernetes config for production — 2 replicas, resource limits, probes |
 | `.github/workflows/deploy.yml` | Pipeline |
-| `terraform/main.tf` | Azure infrastructure |
+| `terraform/main.tf` | Azure infrastructure including monitoring |
 | `scripts/health-check.sh` | Post-deploy health check — environment aware |
-
 ---
-
 ## Spin up
-
 ```bash
 git clone https://github.com/lwr27/lab.git
 cd lab/terraform
 terraform init
 terraform apply
 ```
-
 Push a change to `index.html` to trigger the pipeline.
-
 <details>
 <summary>Terraform apply</summary>
 
@@ -133,7 +112,6 @@ Push a change to `index.html` to trigger the pipeline.
 </details>
 
 ## Tear down
-
 ```bash
 terraform destroy
 ```
