@@ -17,9 +17,14 @@ Push a change to main and this happens automatically:
 3. Pipeline pauses for manual approval
 4. Deployed to production namespace and health checked
 
+<details>
+<summary>Pipeline screenshots</summary>
+
 ![Pipeline paused waiting for approval](screenshots/approval-gate.png)
 
 ![All stages green after approval](screenshots/pipeline-complete.png)
+
+</details>
 
 ---
 
@@ -27,23 +32,54 @@ Push a change to main and this happens automatically:
 
 Provisioned with Terraform — spin up with one command, tear down with one command.
 
-![Terraform apply complete](screenshots/terraform-apply.png)
-
 Resources created:
 - Resource Group
 - Azure Container Registry
 - AKS cluster
 - AcrPull role assignment
 
+<details>
+<summary>Terraform screenshots</summary>
+
+![Terraform apply complete](screenshots/terraform-apply.png)
+
+</details>
+
+---
+
+## Environments
+
+Staging and production run as separate Kubernetes namespaces on the same cluster with their own public IPs.
+
+| | Staging | Production |
+|--|---------|------------|
+| Replicas | 1 | 2 |
+| Approval required | No | Yes |
+| Resource limits | Yes | Yes |
+| Liveness probe | Yes | Yes |
+| Readiness probe | Yes | Yes |
+
+<details>
+<summary>Environment screenshots</summary>
+
+![Health check staging — 1 pod](screenshots/health-check-staging.png)
+
+![Health check production — 2 pods](screenshots/health-check-production.png)
+
+![Staging and production services in AKS](screenshots/aks-services.png)
+
+</details>
+
 ---
 
 ## Live app
 
+<details>
+<summary>App screenshots</summary>
+
 ![App running in browser](screenshots/live-app.png)
 
-Both staging and production run as separate namespaces on the same cluster with their own public IPs.
-
-![Staging and production services in AKS](screenshots/aks-services.png)
+</details>
 
 ---
 
@@ -55,13 +91,18 @@ Two federated credentials:
 - Scoped to `refs/heads/main` for the build and staging stages
 - Scoped to `environment:production` for the production stage
 
-![GitHub secrets — IDs only, no passwords](screenshots/github-secrets.png)
-
 Secrets needed:
 - `ACR_LOGIN_SERVER`
 - `AZURE_CLIENT_ID`
 - `AZURE_TENANT_ID`
 - `AZURE_SUBSCRIPTION_ID`
+
+<details>
+<summary>Auth screenshots</summary>
+
+![GitHub secrets — IDs only, no passwords](screenshots/github-secrets.png)
+
+</details>
 
 ---
 
@@ -71,11 +112,11 @@ Secrets needed:
 |------|-------------|
 | `index.html` | The app |
 | `Dockerfile` | Builds the image |
-| `k8s/staging.yaml` | Kubernetes config for staging |
-| `k8s/production.yaml` | Kubernetes config for production |
+| `k8s/staging.yaml` | Kubernetes config for staging — 1 replica, resource limits, probes |
+| `k8s/production.yaml` | Kubernetes config for production — 2 replicas, resource limits, probes |
 | `.github/workflows/deploy.yml` | Pipeline |
 | `terraform/main.tf` | Azure infrastructure |
-| `scripts/health-check.sh` | Post-deploy health check |
+| `scripts/health-check.sh` | Post-deploy health check — environment aware |
 
 ---
 
@@ -95,7 +136,7 @@ Push a change to `index.html` to trigger the pipeline.
 ```bash
 terraform destroy
 ```
-![Terraform destory results](screenshots/terraform-destroy.png)
+
 ---
 
 ## Stack
