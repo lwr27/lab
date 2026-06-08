@@ -95,7 +95,7 @@ Push a change to `index.html` to trigger the pipeline.
 ```bash
 terraform destroy
 ```
-![GitHub secrets — IDs only, no passwords](screenshots/github-secrets.png)
+![Terraform destory results](screenshots/terraform-destroy.png)
 ---
 
 ## Stack
