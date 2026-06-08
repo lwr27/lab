@@ -140,6 +140,6 @@ terraform destroy
 <details>
 <summary>Terraform destroy</summary>
 
-![Terraform apply complete](screenshots/terraform-destroy.png)
+![Terraform destroy complete](screenshots/terraform-destroy.png)
 
 </details>
