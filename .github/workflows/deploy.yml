@@ -9,6 +9,7 @@ on:
       - 'README.md'
       - '.github/workflows/**'
       - 'scripts/**'
+      - 'screenshots/**'
 
 permissions:
   id-token: write
