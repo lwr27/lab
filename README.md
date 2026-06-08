@@ -1,40 +1,40 @@
 # Lab
 
-A home lab for getting hands on with platform engineering tools and concepts.
+Personal home lab I built to get hands on with platform engineering. Started from scratch so some of this was trial and error.
 
 ## What it does
 
-Deploys a simple web app to Azure Kubernetes Service. Every time I push a change to main, GitHub Actions builds a Docker image, pushes it to Azure Container Registry, and deploys it to AKS automatically. A health check script runs after deployment to verify the cluster is reachable and pods are running.
+Deploys a web app to AKS. Push a change to main, GitHub Actions picks it up, builds a Docker image, pushes it to ACR and deploys it to Kubernetes. Health check runs after to make sure everything came up okay.
 
-## Structure
+## Files
 
 | File | What it does |
 |------|-------------|
-| `index.html` | The web app |
-| `Dockerfile` | Builds the Docker image |
-| `deployment.yaml` | Tells Kubernetes how to run the app and expose it |
-| `.github/workflows/deploy.yml` | The CI/CD pipeline |
-| `terraform/main.tf` | Provisions all the Azure infrastructure |
-| `scripts/health-check.sh` | Verifies AKS is reachable and pods are running after deployment |
+| `index.html` | The app |
+| `Dockerfile` | Builds the image |
+| `deployment.yaml` | Kubernetes config |
+| `.github/workflows/deploy.yml` | Pipeline |
+| `terraform/main.tf` | Azure infrastructure |
+| `scripts/health-check.sh` | Post-deploy health check |
 
 ## Infrastructure
 
-Provisioned with Terraform so I can spin up and tear down quickly:
+All provisioned with Terraform so I can spin it up and tear it down without clicking around the portal.
 
 - Resource Group
 - Azure Container Registry
 - AKS cluster
-- AcrPull role assignment
+- AcrPull role so AKS can pull from ACR
 
-## Authentication
+## Auth
 
-Uses OIDC (OpenID Connect) for passwordless authentication between GitHub Actions and Azure — no secrets to rotate or expire. A federated credential scoped to this repository allows the pipeline to authenticate directly without stored passwords.
+Uses OIDC so there are no stored passwords or credentials to rotate. GitHub and Azure trust each other directly via a federated credential scoped to this repo.
 
-GitHub secrets required:
-- `ACR_LOGIN_SERVER` — ACR address (non-sensitive)
-- `AZURE_CLIENT_ID` — OIDC app registration
-- `AZURE_TENANT_ID` — Azure tenant
-- `AZURE_SUBSCRIPTION_ID` — Azure subscription
+Secrets needed:
+- `ACR_LOGIN_SERVER`
+- `AZURE_CLIENT_ID`
+- `AZURE_TENANT_ID`
+- `AZURE_SUBSCRIPTION_ID`
 
 ## Spin up
 
@@ -45,7 +45,7 @@ terraform init
 terraform apply
 ```
 
-Then push a change to trigger the pipeline — no credential updates needed.
+Push a change to index.html to trigger the pipeline.
 
 ## Tear down
 
@@ -53,17 +53,6 @@ Then push a change to trigger the pipeline — no credential updates needed.
 terraform destroy
 ```
 
-## Tools used
+## Stack
 
-GitHub Actions · Docker · Azure Container Registry · AKS · Terraform · kubectl · Bash · OIDC
-
-## Things I learned building this
-
-- How CI/CD pipelines work end to end
-- How Docker images get built and stored in a registry
-- How Kubernetes deploys and manages containers
-- How self-healing works in practice
-- How to provision Azure infrastructure with Terraform
-- How to write and run health check scripts in a pipeline
-- How to implement passwordless OIDC authentication between GitHub and Azure
-- How to debug real errors — ImagePullBackOff, credential issues, missing manifests
+GitHub Actions · Docker · ACR · AKS · Terraform · Bash · OIDC
