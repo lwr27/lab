@@ -3,9 +3,15 @@
 echo "=== Starting health check ==="
 NAMESPACE=${1:-default}
 APP="myapp"
-EXPECTED=1
 TIMEOUT=60
 ELAPSED=0
+
+# Set expected replicas based on namespace
+if [ "$NAMESPACE" = "production" ]; then
+  EXPECTED=2
+else
+  EXPECTED=1
+fi
 
 echo "Checking AKS connectivity..."
 if kubectl cluster-info > /dev/null 2>&1; then
@@ -15,7 +21,7 @@ else
   exit 1
 fi
 
-echo "Checking pod health in namespace: $NAMESPACE..."
+echo "Checking pod health in namespace: $NAMESPACE (expecting $EXPECTED pods)..."
 
 while [ $ELAPSED -lt $TIMEOUT ]
 do
