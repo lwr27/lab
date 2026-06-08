@@ -69,9 +69,6 @@ Azure Monitor and Log Analytics provisioned via Terraform. Pod status is queryab
 ---
 ## Auth
 Uses OIDC — GitHub and Azure trust each other directly via federated credentials. No passwords, nothing to rotate or expire.
-Two federated credentials:
-- Scoped to `refs/heads/main` for the build and staging stages
-- Scoped to `environment:production` for the production stage
 Secrets needed:
 - `ACR_LOGIN_SERVER`
 - `AZURE_CLIENT_ID`
