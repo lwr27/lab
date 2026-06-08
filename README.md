@@ -38,12 +38,6 @@ Resources created:
 - AKS cluster
 - AcrPull role assignment
 
-<details>
-<summary>Terraform screenshots</summary>
-
-![Terraform apply complete](screenshots/terraform-apply.png)
-
-</details>
 
 ---
 
@@ -131,12 +125,24 @@ terraform apply
 
 Push a change to `index.html` to trigger the pipeline.
 
+<details>
+<summary>Terraform apply</summary>
+
+![Terraform apply complete](screenshots/terraform-apply.png)
+
+</details>
+
 ## Tear down
 
 ```bash
 terraform destroy
 ```
+<details>
+<summary>Terraform destroy</summary>
 
+![Terraform apply complete](screenshots/terraform-destroy.png)
+
+</details>
 ---
 
 ## Stack
