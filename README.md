@@ -159,6 +159,10 @@ terraform destroy
 
 ---
 
+---
+&nbsp;
+---
+
 ## Azure DevOps Lab
 
 A separate self-contained lab using Azure DevOps tooling end to end — Azure Repos, Azure Pipelines, and Azure Boards. Deploys a Python Flask app to AKS using the same infrastructure pattern as the GitHub lab but built entirely within the Azure DevOps ecosystem.
