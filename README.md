@@ -1,7 +1,7 @@
 # Lab
 Personal home lab built to get hands on with platform engineering concepts.
 
-| [🐙 GitHub Actions Lab](#github-actions-lab) | [🔷 Azure DevOps Lab](#azure-devops-lab) |
+| [GitHub Actions Lab](#github-actions-lab) | [Azure DevOps Lab](#azure-devops-lab) |
 |:---:|:---:|
 
 ---
@@ -291,5 +291,5 @@ Push a change to `app.py` to trigger the pipeline.
 ### Tear down
 
 ```bash
-az group delete --name devops-lab-rg --yes
+terraform destroy
 ```
