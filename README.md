@@ -299,3 +299,9 @@ Push a change to `app.py` to trigger the pipeline.
 ```bash
 terraform destroy
 ```
+
+---
+
+---
+&nbsp;
+---
