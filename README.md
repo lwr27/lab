@@ -291,5 +291,5 @@ Push a change to `app.py` to trigger the pipeline.
 ### Tear down
 
 ```bash
-az group delete --name devops-lab-rg --yes
+terraform destroy
 ```
