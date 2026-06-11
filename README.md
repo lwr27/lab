@@ -22,7 +22,7 @@ Push a change to main and this happens automatically:
 4. Deployed to production namespace and health checked
 
 <details>
-<summary>Pipeline screenshots</summary>
+<summary>📷 Pipeline screenshots</summary>
 
 ![Pipeline paused waiting for approval](screenshots/approval-gate.png)
 ![All stages green after approval](screenshots/pipeline-complete.png)
@@ -58,7 +58,7 @@ Staging and production run as separate Kubernetes namespaces on the same cluster
 | Readiness probe | Yes | Yes |
 
 <details>
-<summary>Environment screenshots</summary>
+<summary>📷 Environment screenshots</summary>
 
 ![Health check staging — 1 pod](screenshots/health-check-staging.png)
 ![Health check production — 2 pods](screenshots/health-check-production.png)
@@ -73,7 +73,7 @@ Staging and production run as separate Kubernetes namespaces on the same cluster
 Azure Monitor and Log Analytics provisioned via Terraform. Pod status is queryable via KQL. A metric alert fires if pod count drops to zero and sends an email notification.
 
 <details>
-<summary>Monitoring screenshots</summary>
+<summary>📷 Monitoring screenshots</summary>
 
 ![Alert rule — fires when no pods running](screenshots/pod-rule.png)
 ![KQL query — production pod status over time](screenshots/kql-log.png)
@@ -85,7 +85,7 @@ Azure Monitor and Log Analytics provisioned via Terraform. Pod status is queryab
 ### Live app
 
 <details>
-<summary>App screenshots</summary>
+<summary>📷 App screenshots</summary>
 
 ![App running in browser](screenshots/live-app.png)
 
@@ -104,7 +104,7 @@ Secrets needed:
 - `AZURE_SUBSCRIPTION_ID`
 
 <details>
-<summary>Auth screenshots</summary>
+<summary>📷 Auth screenshots</summary>
 
 ![GitHub secrets — IDs only, no passwords](screenshots/github-secrets.png)
 
@@ -138,7 +138,7 @@ terraform apply
 Push a change to `index.html` to trigger the pipeline.
 
 <details>
-<summary>Terraform apply</summary>
+<summary>📷 Terraform apply</summary>
 
 ![Terraform apply complete](screenshots/terraform-apply.png)
 
@@ -151,17 +151,12 @@ terraform destroy
 ```
 
 <details>
-<summary>Terraform destroy</summary>
+<summary>📷 Terraform destroy</summary>
 
 ![Terraform destroy complete](screenshots/terraform-destroy.png)
 
 </details>
 
----
-
-
----
-&nbsp;
 ---
 
 ## Azure DevOps Lab
@@ -192,7 +187,7 @@ Push to main triggers:
 4. Deployed to production namespace with health check
 
 <details>
-<summary>Pipeline screenshots</summary>
+<summary>📷 Pipeline screenshots</summary>
 
 ![All stages green](screenshots/ado-pipelines.png)
 
@@ -233,7 +228,7 @@ Staging and production as separate Kubernetes namespaces, same pattern as the Gi
 Work items tracked in Azure Boards throughout the build.
 
 <details>
-<summary>Azure Boards</summary>
+<summary>📷 Azure Boards</summary>
 
 ![Work items — all done](screenshots/work-items.png)
 
@@ -246,7 +241,7 @@ Work items tracked in Azure Boards throughout the build.
 Main branch protected with branch policies — requires reviewer approval before merge.
 
 <details>
-<summary>Branch policies</summary>
+<summary>📷 Branch policies</summary>
 
 ![Branch policies on main](screenshots/branch-policies.png)
 
@@ -259,7 +254,7 @@ Main branch protected with branch policies — requires reviewer approval before
 Python Flask app deployed to AKS via Azure Pipelines.
 
 <details>
-<summary>App screenshot</summary>
+<summary>📷 App screenshot</summary>
 
 ![Flask app running in browser](screenshots/web-result.png)
 
@@ -296,5 +291,5 @@ Push a change to `app.py` to trigger the pipeline.
 ### Tear down
 
 ```bash
-terraform destroy
+az group delete --name devops-lab-rg --yes
 ```
